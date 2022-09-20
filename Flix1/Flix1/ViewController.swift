@@ -22,7 +22,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
     
         
-        print("hello")
+//        print("hello")
         
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
@@ -71,14 +71,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        // "sender" is the cell that was initially sent from
+
+        //we need to find the selected movie, so it will show on the second detail screen
+        //after finding it can be passed into he detail screen
+        
+        let cell = sender as! UITableViewCell  // sets cell as the selected cell 
+        let indexPath = tableView.indexPath(for:cell)! //this provides the specific indexPath, or index, for a given cell. Since the cell we clicked on is the sender, if we pass in the sender, then we can be given the index path back to find the specific data point
+        let movie = movies[indexPath.row] //finds the specific movie
+
+        let detailsViewController = segue.destination as! MoviesDetailViewController //takes a generic viewcontroller and casts it as movie details view controller
+        detailsViewController.movie = movie // passes movie dictionary to details view controller
+        
+        
+        tableView.deselectRow(at: indexPath, animated: true) //this will deselect the previously selected movie so it isn't highlighted when we come back
+        
+        
+
     }
-    */
 }
 
